@@ -1,0 +1,57 @@
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Hello <h3>{{fullName}}</h3></a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+            <a style="background: red;
+            color: #fff;
+            border-radius: 4px;
+            margin: 10px;" class="nav-link px-3 cursor-pointer" (click)="logout()">Sign out</a>
+        </div>
+    </div>
+  </header>
+  
+  <div class="container-fluid">
+    <div class="row">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="chartjs-size-monitor">
+                <div class="chartjs-size-monitor-expand">
+                    <div class=""></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink">
+                    <div class=""></div>
+                </div>
+            </div>
+            <h2>Albums</h2><br>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Album Name</th>
+                            <th scope="col">Created By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let album of albums; let i= index ">
+                            <td>{{i+1}}</td>
+                            <td><a class="btn" [routerLink]="['/images', album.id]">{{album.albumName}}</a></td>
+                            <td>{{album.albumOwnerName}}</td>
+                            <td>
+                                <ng-container *ngIf="role === 'Admin'">
+                                <button (click)="onDelete(album.id)"
+                              class="btn  btn-outline-hover-danger btn-icon"
+                              href="javascript:;">
+                              <i class="fa fa-times"></i>
+                          </button>
+                        </ng-container></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+  </div>
+  
