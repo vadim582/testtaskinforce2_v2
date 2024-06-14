@@ -1,10 +1,6 @@
-#Development server
-
-Run ng serve for a dev server. Navigate to http://localhost:4200/. The application will automatically reload if you change any of the source files.
-
 #How to use
 
-First off all you need to run backend from API folder. Then you should set your database connection in "ConnectionStrings", which is located in appsettings.json file in API folder. After adding migration and updating database you can run ng serve. To register an admin simply create user with username admin, every other created user wll be created as regular users.
+First off all you need to run backend from API folder. Then you should set your database connection in "ConnectionStrings", which is located in appsettings.json file in API folder. After adding migration and updating database you can run ng serve. To register an admin simply create user with username admin, every other created user wll be created as regular user.
 
 #Build
 
