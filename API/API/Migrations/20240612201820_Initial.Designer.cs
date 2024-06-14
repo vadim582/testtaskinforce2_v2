@@ -4,6 +4,7 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240612201820_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,23 +51,21 @@ namespace API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("IsLike")
-                        .HasColumnType("bit");
+                    b.Property<string>("DislikedUsername")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LikedUsename")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PictureId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PictureId");
-
-                    b.HasIndex("UserId", "PictureId")
+                    b.HasIndex("PictureId")
                         .IsUnique();
 
-                    b.ToTable("likes", (string)null);
+                    b.ToTable("LikesAndDislikes");
                 });
 
             modelBuilder.Entity("API.Models.Picture", b =>
@@ -127,30 +127,17 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.LikesAndDislikes", b =>
                 {
                     b.HasOne("API.Models.Picture", "Picture")
-                        .WithMany("Likes")
-                        .HasForeignKey("PictureId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("API.Models.User", "User")
-                        .WithMany("Likes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithOne("LnD")
+                        .HasForeignKey("API.Models.LikesAndDislikes", "PictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Picture");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Models.Picture", b =>
                 {
-                    b.Navigation("Likes");
-                });
-
-            modelBuilder.Entity("API.Models.User", b =>
-                {
-                    b.Navigation("Likes");
+                    b.Navigation("LnD");
                 });
 #pragma warning restore 612, 618
         }

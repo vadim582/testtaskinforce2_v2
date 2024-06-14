@@ -18,7 +18,6 @@ export class ImagesService {
   addPicture(imgObj: Image) {
     let formData = new FormData();
     formData.append("albumName",imgObj.albumName);
-    formData.append("imageUrl",imgObj.imageUrl);
     formData.append("imageFile",imgObj.imageFile??"");
     return this.http.post<any>(`${this.baseUrl}addPicture`, formData)
   }

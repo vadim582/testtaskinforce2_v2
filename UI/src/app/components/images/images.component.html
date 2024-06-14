@@ -1,39 +1,41 @@
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Hello <h3>{{fullName}}</h3></a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Hello<h3>{{fullName}}</h3></a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="navbar-nav">
+    <div class="navbar-nav ms-auto">
         <div class="nav-item text-nowrap">
+            <a style="background: rgb(25, 0, 255);
+            color: #fff;
+            border-radius: 4px;
+            margin: 10px;" class="nav-link px-3 cursor-pointer" [routerLink]="['/albums']">All Albums</a>
+            <a style="background: rgb(25, 0, 255);
+            color: #fff;
+            border-radius: 4px;
+            margin: 10px;" class="nav-link px-3 cursor-pointer" [routerLink]="['/dashboard']">My Albums</a>
             <a style="background: red;
             color: #fff;
             border-radius: 4px;
             margin: 10px;" class="nav-link px-3 cursor-pointer" (click)="logout()">Sign out</a>
         </div>
     </div>
-  </header>
-  
-  <div class="container-fluid">
+</header>
+<div class="container-fluid">
     <div class="row">
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Images from {{albumName}}</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
+                <h1 class="h2">Images from {{albumName}} Created by {{albumOwnerName}}</h1>
+            </div>
+            <ng-container *ngIf="(role === 'Admin' && albumOwnerName === fullName) || (role === 'User' && albumOwnerName === fullName)">
+                <div class="panel-body p-3">
+                    <form [formGroup]="addImageForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group pt-3">
+                            <label for="imageFile" class="form-label">Choose File to Add to the album</label>
+                            <input type="file" (change)="onChange($event)" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block mt-4 w-50">Add Pic</button>
+                    </form>
                 </div>
-            </div>
-            <ng-container *ngIf="role === 'Admin' || role === 'User'">
-            <div class="panel-body p-3">
-                <form [formGroup]="addImageForm" (ngSubmit)="onSubmit()">
-                    <div class="form-group pt-3">
-                        <div class="input-field"> <span class="fa fa-user p-2"></span> <input formControlName="imageUrl" type="text" placeholder="Image Url"> </div>
-                    </div>
-                    <div class="form-group pt-3">
-                      <label for="imageFile"  class="form-label">Choose File</label>
-                      <input type="file" (change)="onChange($event)" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block mt-4 w-50">Add Pic</button>
-                </form>
-            </div>
             </ng-container>
             <h2>Pics</h2><br>
             <div class="table-responsive">
@@ -45,25 +47,42 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let pic of pictures | albumFilter: albumName; let i= index ">
-                            <td>{{i+1}}</td>
+                        <tr *ngFor="let pic of pictures | albumFilter: albumName | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }; let i = index">
+                            <td>{{i + 1 + (currentPage - 1) * itemsPerPage}}</td>
                             <td>{{pic.imageUrl}}</td>
                             <td>
-                                <img style="height:80px;width:80px;" [src]="imageBaseUrl+pic.imageName">
+                                <img style="height:80px;width:80px;" [src]="imageBaseUrl + pic.imageName">
                             </td>
                             <td>
-                                <ng-container *ngIf="role === 'Admin'">
-                                <button (click)="onDelete(pic.id)"
-                              class="btn  btn-outline-hover-danger btn-icon"
-                              href="javascript:;">
-                              <i class="fa fa-times"></i>
-                          </button>
-                        </ng-container></td>
+                                <ng-container *ngIf="role === 'Admin' || (role === 'User' && albumOwnerName === fullName)">
+                                    <button (click)="onDelete(pic.id)" class="btn btn-outline-hover-danger btn-icon" href="javascript:;">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="role === 'Admin' || role === 'User'">
+                                    <button style="background: rgb(47, 0, 255);
+                                    color: #fff;
+                                    border-radius: 4px;
+                                    margin: 10px;" class="nav-link px-3 cursor-pointer" (click)="like(pic.id)">Like</button>
+                                    <button style="background: red;
+                                    color: #fff;
+                                    border-radius: 4px;
+                                    margin: 10px;" class="nav-link px-3 cursor-pointer" (click)="dislike(pic.id)">Dislike</button>
+                                </ng-container>
+                            </td>
+                            <td>
+                                <ng-container>
+                                    <span>Likes: {{ likesCounts[pic.id]?.likesCount }} | </span>
+                                    <span>Dislikes: {{ likesCounts[pic.id]?.dislikesCount }}</span>
+                                </ng-container>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+                <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
             </div>
         </main>
     </div>
-  </div>
-  
+</div>

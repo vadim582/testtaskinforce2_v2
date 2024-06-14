@@ -17,6 +17,8 @@ export class AlbumsComponent implements OnInit {
   public albums:any = [];
   public role!:string;
   public fullName : string = "";
+  public currentPage = 1;
+  public itemsPerPage = 5;
   constructor(private api : ApiService, private albumApi : AlbumService, private auth: AuthService, private userStore: UserStoreService, private router: Router) { }
 
   ngOnInit() {
@@ -45,6 +47,9 @@ export class AlbumsComponent implements OnInit {
       this.role = val || roleFromToken;
       }
     });
+  }
+  onPageChange(page: number) {
+    this.currentPage = page;
   }
   onDelete(id: number) {
     if (confirm('Are you sure to delete this record?'))

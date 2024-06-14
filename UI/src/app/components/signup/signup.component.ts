@@ -22,7 +22,6 @@ export class SignupComponent implements OnInit {
       firstName:['', Validators.required],
       lastName:['', Validators.required],
       userName:['', Validators.required],
-      email:['', Validators.required],
       password:['', Validators.required]
     })
   }
@@ -53,7 +52,8 @@ export class SignupComponent implements OnInit {
           alert(err?.error.message)
         })
       })
-    } else {
+    } 
+    else {
       ValidateForm.validateAllFormFields(this.signUpForm); //{7}
     }
   }

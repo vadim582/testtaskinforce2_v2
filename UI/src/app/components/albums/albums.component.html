@@ -4,7 +4,11 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="navbar-nav">
-        <div class="nav-item text-nowrap">
+        <div class="nav-item text-nowrap"> 
+            <a style="background: rgb(25, 0, 255);
+            color: #fff;
+            border-radius: 4px;
+            margin: 10px;" class="nav-link px-3 cursor-pointer" [routerLink]="['/dashboard']">My Albums</a>
             <a style="background: red;
             color: #fff;
             border-radius: 4px;
@@ -35,22 +39,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let album of albums; let i= index ">
-                            <td>{{i+1}}</td>
-                            <td><a class="btn" [routerLink]="['/images', album.id]">{{album.albumName}}</a></td>
+                        <tr *ngFor="let album of albums | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }; let i = index">
+                            <td>{{i + 1 + (currentPage - 1) * itemsPerPage}}</td>
+                            <td><a [routerLink]="['/images', album.id]">{{album.albumName}}</a></td>
                             <td>{{album.albumOwnerName}}</td>
                             <td>
-                                <ng-container *ngIf="role === 'Admin'">
+                            <ng-container *ngIf="role === 'Admin'">
                                 <button (click)="onDelete(album.id)"
-                              class="btn  btn-outline-hover-danger btn-icon"
-                              href="javascript:;">
-                              <i class="fa fa-times"></i>
-                          </button>
-                        </ng-container></td>
+                                    class="btn  btn-outline-hover-danger btn-icon"
+                                    href="javascript:;">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </ng-container></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
         </main>
     </div>
   </div>

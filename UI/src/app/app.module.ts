@@ -14,6 +14,7 @@ import { FilterPipe } from './components/filter.pipe';
 import { AlbumsComponent } from './components/albums/albums.component';
 import { ImagesComponent } from './components/images/images.component';
 import { AlbumFilterPipe } from './album-filter.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AlbumFilterPipe } from './album-filter.pipe';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    NgToastModule
+    NgToastModule,
+    NgxPaginationModule
   ],
   providers: [{
     provide:HTTP_INTERCEPTORS,

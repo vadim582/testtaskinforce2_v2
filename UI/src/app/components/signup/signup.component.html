@@ -21,16 +21,12 @@
                           </div>
                           <small *ngIf="signUpForm.controls['userName'].dirty && signUpForm.hasError('required','userName')" class="text-danger">*Username is required*</small>
                           <div class="form-group pt-3">
-                              <div class="input-field" [class.error]="signUpForm.controls['email'].dirty && signUpForm.hasError('required','email')"> <span class="fa fa-user p-2"></span> <input formControlName="email" type="text" placeholder="Email"> </div>
-                          </div>
-                          <small *ngIf="signUpForm.controls['email'].dirty && signUpForm.hasError('required','email')" class="text-danger">*Email is required*</small>
-                          <div class="form-group pt-3">
                               <div class="input-field" [class.error]="signUpForm.controls['password'].dirty && signUpForm.hasError('required','password')"> <span class="fa fa-lock px-2"></span> <input formControlName="password" [type]="type" placeholder="Password"> <button (click)="hideShowPass()" type="button" class="bg-white text-muted"> <span class="fa {{eyeIcon}}"></span> </button>                                    </div>
                           </div>
                           <small *ngIf="signUpForm.controls['password'].dirty && signUpForm.hasError('required','password')" class="text-danger">*Password is required*</small>
 
                           <button type="submit" class="btn btn-primary btn-block mt-4 w-100">Signup</button>
-                          <div class="text-center pt-4 text-muted">Already have an account? <a id="forgot" routerLink="/login" href="#">Login</a> </div>
+                          <div class="text-center pt-4 text-muted"><a class="btn btn-primary btn-block mt-4 w-100" id="forgot" routerLink="/login" href="#">Login</a> </div>
                       </form>
                   </div>
 

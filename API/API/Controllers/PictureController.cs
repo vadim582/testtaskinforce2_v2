@@ -45,6 +45,16 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePicture(int id)
         {
+            var picture = await _pictureContext.Pictures
+            .Include(p => p.Likes)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (picture == null)
+            {
+                return NotFound();
+            }
+            _pictureContext.LikesAndDislikes.RemoveRange(picture.Likes);
+
             if (_pictureContext.Pictures == null)
             {
                 return NotFound();

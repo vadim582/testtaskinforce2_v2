@@ -8,7 +8,7 @@
         <a style="background: rgb(25, 0, 255);
         color: #fff;
         border-radius: 4px;
-        margin: 10px;" class="nav-link px-3 cursor-pointer" [routerLink]="['/albums']">Albums</a>
+        margin: 10px;" class="nav-link px-3 cursor-pointer" [routerLink]="['/albums']">All Albums</a>
         <a style="background: red;
           color: #fff;
           border-radius: 4px;
@@ -38,7 +38,6 @@
                 <button type="submit" class="btn btn-primary btn-block mt-4 w-50">Create Album</button>
             </form>
         </div>
-
           <h2>Your albums</h2><br>
           <div class="table-responsive">
               <table class="table table-striped table-sm">
@@ -51,12 +50,14 @@
                   <tbody>
                       <tr *ngFor="let album of albums | filter: fullName; let i= index ">
                           <td>{{i+1}}</td>
-                          <td>{{album.albumName}}</td>
-                          <td><button (click)="onDelete(album.id)"
+                          <td><a class="btn" [routerLink]="['/images', album.id]">{{album.albumName}}</a></td>
+                          <td>
+                            <button (click)="onDelete(album.id)"
                             class="btn  btn-outline-hover-danger btn-icon"
                             href="javascript:;">
                             <i class="fa fa-times"></i>
-                        </button></td>
+                            </button>
+                          </td>
                       </tr>
                   </tbody>
               </table>

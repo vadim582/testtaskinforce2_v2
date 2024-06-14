@@ -63,11 +63,6 @@ namespace API.Controllers
             if (userObj == null)
                 return BadRequest();
 
-            // check email
-            if (await CheckEmailExistAsync(userObj.Email))
-                return BadRequest(new { Message = "Email Already Exist" });
-
-            //check username
             if (await CheckUsernameExistAsync(userObj.Username))
                 return BadRequest(new { Message = "Username Already Exist" });
 
@@ -93,11 +88,8 @@ namespace API.Controllers
             });
         }
 
-        private Task<bool> CheckEmailExistAsync(string? email)
-            => _authContext.Users.AnyAsync(x => x.Email == email);
-
         private Task<bool> CheckUsernameExistAsync(string? username)
-            => _authContext.Users.AnyAsync(x => x.Email == username);
+            => _authContext.Users.AnyAsync(x => x.Username == username);
 
         private static string CheckPasswordStrength(string pass)
         {
@@ -118,7 +110,8 @@ namespace API.Controllers
             var identity = new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.Role, user.Role),
-                new Claim(ClaimTypes.Name,$"{user.Username}")
+                new Claim(ClaimTypes.Name,$"{user.Username}"),
+                new Claim(ClaimTypes.NameIdentifier,$"{user.Id}")
             });
 
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
@@ -160,12 +153,12 @@ namespace API.Controllers
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token,tokenValidationParameters, out securityToken);
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("This is Invalid Token");
             return principal;
-                
+
         }
 
         [HttpGet]
