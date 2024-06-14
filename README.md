@@ -16,4 +16,4 @@ I'm not familiar with unit testing but i tried to add some unit tests to the pro
 
 #Additional information about project
 
-I was applying to this company several months ago and I was working on the same task. This time I was working mostly on implementing proper access with different user roles and implementing like/dislike system. I tried to make proper data structures for new feature this time although I did not rework old data structures so they may seem flawed.
+I was applying to this company several months ago and I was working on the same task. This time I was working mostly on implementing proper access with different authentification roles and implementing like/dislike system. I tried to make proper data structures for new feature this time although I did not rework old data structures so they may seem flawed.
